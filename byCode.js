@@ -7,20 +7,22 @@ var complaintCodes;
 var sortedStreets;
 var whichStreet = 0;
 var code;
+var codeName;
+var priority;
 
 function preload(){
     complaints = loadJSON("data/complaints.json");
     complaintCodes = loadJSON("data/complaintCodes.json");
-} 
+}
 
 function setup() {
- 
+
     //Make the canvas and then insert it into a div
     createCanvas(windowWidth, windowHeight);
-    background("white");  
+    background("white");
     textAlign(CENTER);
     rectMode(CORNER);
-      
+
    //count the complaints per street
     var streets = {};
     for (var i = 0; i < complaints.data.length; i++) {
@@ -29,18 +31,45 @@ function setup() {
     }
 
     //sort them
-    sortedStreets = sortHighLow(streets);   
+    sortedStreets = sortHighLow(streets);
 
 }
 
 function draw() {
 
+    var numb = "84"
     code = sortedStreets[whichStreet][0];
+var errorMessage = complaintCodes[numb];
+    codeName = complaintCodes[code]["category"];
 
-    background("#E6EBE0");
+    if(errorMessage){
+    	text(numb,0,0);
+    }
+
+
+
+
+
+    priority = complaintCodes[code]["priority"];
+
+    if (priority == "A") {
+      background("#ff0000");
+
+    } else if (priority == "B") {
+      background("#ffa200");
+
+    } else if (priority == "C") {
+      background("#ffe610");
+
+    } else if (priority == "D") {
+      background("#0fce3c");
+
+    } else {
+
+    }
 
     textSize(50);
-    
+
     fill("#5CA4A9");
     text("There have been",windowWidth/2,100);
 
@@ -51,7 +80,8 @@ function draw() {
     text("complaints about",windowWidth/2,200);
 
     fill("#ED6A5A");
-    text(code,0,260,windowWidth, 250);
+    text(codeName,0,260,windowWidth, 250);
+
 
 }
 
@@ -67,5 +97,3 @@ function keyPressed() {
     }
   }
 }
-
-
